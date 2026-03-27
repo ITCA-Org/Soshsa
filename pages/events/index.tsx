@@ -64,11 +64,11 @@ const EventsPage = () => {
       <section className="relative bg-white py-10 lg:py-15">
         <div className="w-full px-6 lg:px-8">
           <motion.div
+            viewport={{ once: true }}
             className="max-w-3xl mb-16"
+            transition={{ duration: 0.6 }}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
           >
             <p className="text-primary text-sm uppercase tracking-widest mb-4">
               What{"'"}s Happening
