@@ -20,7 +20,7 @@ const Document = () => (
       />
       <meta
         name="google-site-verification"
-        content="cYtk4C3rxSxsbweqGDktZcyXjEQLFbmShStbGJPmq44"
+        content="TMUe1xf-i111RRKXHGhD2tl-NRcBTb29bvJRbAiEoaM"
       />
     </Head>
     <body>
