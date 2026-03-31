@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { BASE_URL } from "@/utils/url";
+import { BookOpen } from "lucide-react";
 import { HomeMagazineSkeletonGrid } from "@/components/website/skeletons/Skeleton";
 
 const MagazineSection = () => {
@@ -27,10 +28,6 @@ const MagazineSection = () => {
       revalidateIfStale: false,
     },
   );
-
-  if (!isLoading && magazines.length === 0) {
-    return null;
-  }
 
   return (
     <section className="relative min-h-screen bg-gray-900 py-20 lg:py-32">
@@ -93,6 +90,26 @@ const MagazineSection = () => {
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
                 <HomeMagazineSkeletonGrid />
+              </motion.div>
+            ) : !isLoading && magazines.length === 0 ? (
+              <motion.div
+                className="flex flex-col items-center justify-center min-h-[500px] text-center"
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                <div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center mb-6">
+                  <BookOpen size={40} className="text-primary" />
+                </div>
+                <h3 className="text-3xl font-bold text-white mb-4">
+                  No Magazines Published Yet
+                </h3>
+                <p className="text-white/70 max-w-md mb-8 text-lg">
+                  We're preparing our next issue filled with insightful articles
+                  and research. Stay tuned for exciting content from our
+                  community.
+                </p>
               </motion.div>
             ) : (
               <motion.div

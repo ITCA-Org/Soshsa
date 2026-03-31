@@ -23,9 +23,9 @@ import {
   FileText,
   Download,
 } from "lucide-react";
+import { AdminAuth } from "@/types";
 import { DashboardLayoutProps } from "@/types/interface/dashboard";
 import ConfirmationModal from "@/components/dashboard/ui/modals/ConfirmationModal";
-import { AdminAuth } from "@/types";
 
 interface DashboardLayoutWithAuthProps extends DashboardLayoutProps {
   adminData?: AdminAuth;

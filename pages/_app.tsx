@@ -9,7 +9,7 @@ export default function App({ Component, pageProps }: AppProps) {
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
         revalidateIfStale: true,
-        dedupingInterval: 15 * 60 * 1000,
+        dedupingInterval: 1 * 60 * 1000,
         errorRetryCount: 3,
         errorRetryInterval: 5000,
         shouldRetryOnError: true,

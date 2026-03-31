@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { BASE_URL } from "@/utils/url";
+import { Calendar } from "lucide-react";
 
 interface Event {
   id: string;
@@ -61,10 +62,6 @@ const EventsSection = () => {
     },
   };
 
-  if (!isLoading && events.length === 0) {
-    return null;
-  }
-
   return (
     <section className="relative min-h-screen bg-white py-20 lg:py-32">
       <div className="w-full px-6 lg:px-8">
@@ -97,6 +94,44 @@ const EventsSection = () => {
               <div className="h-[390px] bg-gray-200 rounded-lg animate-pulse"></div>
             </div>
           </div>
+        ) : !isLoading && events.length === 0 ? (
+          <motion.div
+            className="flex flex-col items-center justify-center py-32"
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center mb-6">
+              <Calendar size={40} className="text-primary" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-3">
+              No Upcoming Events
+            </h3>
+            <p className="text-gray-600 text-center max-w-md mb-8">
+              We're currently planning exciting new events and programs. Check
+              back soon or visit our events page for past initiatives.
+            </p>
+            <Link
+              href="/events"
+              className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors"
+            >
+              View All Events
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
+              </svg>
+            </Link>
+          </motion.div>
         ) : (
           <motion.div
             className="grid grid-cols-12 gap-6 lg:gap-8"
