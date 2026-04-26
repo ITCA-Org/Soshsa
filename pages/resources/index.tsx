@@ -1,18 +1,18 @@
 import useSWR from "swr";
 import axios from "axios";
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { toast, Toaster } from "sonner";
-import { BASE_URL } from "@/utils/url";
+import { useState, useEffect } from "react";
 import Layout from "@/components/website/Layout";
+import { BASE_URL, JEETIX_BASE_URL } from "@/utils/url";
 import {
-  Download,
-  ExternalLink,
-  FileText,
   Video,
-  BookOpen,
   Search,
+  Download,
+  FileText,
+  BookOpen,
   ChevronLeft,
+  ExternalLink,
   ChevronRight,
 } from "lucide-react";
 import useDebounce from "@/utils/debounce";
@@ -155,13 +155,29 @@ const ResourcesPage = () => {
   }, [initialLinksData]);
 
   const loadMoreCitations = async () => {
+    if (loadingMoreCitations) return;
+
     setLoadingMoreCitations(true);
+
     try {
       const nextPage = citationsPage + 1;
+
       const { data } = await axios.get(`${BASE_URL}/citation-files`, {
         params: { page: nextPage, limit: 12 },
       });
-      setAllCitations((prev) => [...prev, ...data.data.data]);
+
+      const newItems = data.data.data;
+
+      setAllCitations((prev) => {
+        const existingIds = new Set(prev.map((item) => item.id));
+
+        const filtered = newItems.filter(
+          (item: CitationFile) => !existingIds.has(item.id)
+        );
+
+        return [...prev, ...filtered];
+      });
+
       setCitationsPage(nextPage);
     } catch {
       toast.error("Failed to load more citations");
@@ -171,13 +187,29 @@ const ResourcesPage = () => {
   };
 
   const loadMoreLinks = async () => {
+    if (loadingMoreLinks) return;
+
     setLoadingMoreLinks(true);
+
     try {
       const nextPage = linksPage + 1;
+
       const { data } = await axios.get(`${BASE_URL}/useful-links`, {
         params: { page: nextPage, limit: 12 },
       });
-      setAllLinks((prev) => [...prev, ...data.data.data]);
+
+      const newItems = data.data.data;
+
+      setAllLinks((prev) => {
+        const existingIds = new Set(prev.map((item) => item.id));
+
+        const filtered = newItems.filter(
+          (item: UsefulLink) => !existingIds.has(item.id)
+        );
+
+        return [...prev, ...filtered];
+      });
+
       setLinksPage(nextPage);
     } catch {
       toast.error("Failed to load more links");
@@ -203,47 +235,21 @@ const ResourcesPage = () => {
   const hasMoreCitations = allCitations.length < totalCitations;
   const hasMoreLinks = allLinks.length < totalLinks;
 
-  const handleDownload = async (
-    fileUrl: string,
-    fileName: string,
-    folder: string,
-  ) => {
+  const handleDownload = async (fileUrl: string, fileName: string) => {
     setDownloading(fileUrl);
+
     try {
-      const fileNameFromUrl = fileUrl.split("/").pop();
-      if (!fileNameFromUrl) {
-        toast.error("Invalid file URL");
-        return;
-      }
+      const encodedName = encodeURIComponent(fileName);
 
-      const response = await axios.get(
-        `https://jeetix-file-service.onrender.com/api/storage/file/${folder}/${fileNameFromUrl}`,
-      );
+      const link = document.createElement("a");
+      link.href = `${fileUrl}?download=${encodedName}`;
+      link.download = fileName;
 
-      if (
-        response.data.status === "success" &&
-        response.data.data.metadata?.mediaLink
-      ) {
-        const mediaLink = response.data.data.metadata.mediaLink;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
 
-        const fileResponse = await axios.get(mediaLink, {
-          responseType: "blob",
-        });
-        const blob = new Blob([fileResponse.data]);
-        const blobUrl = window.URL.createObjectURL(blob);
-
-        const link = document.createElement("a");
-        link.href = blobUrl;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(blobUrl);
-
-        toast.success("Download started");
-      } else {
-        toast.error("Failed to get download link");
-      }
+      toast.success("Download started");
     } catch (error) {
       toast.error("Failed to download file");
       console.error(error);
@@ -300,11 +306,10 @@ const ResourcesPage = () => {
                     <button
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
-                      className={`flex items-center gap-2 px-6 py-3 font-medium whitespace-nowrap border-b-2 transition-colors ${
-                        activeTab === tab.id
-                          ? "border-primary text-primary"
-                          : "border-transparent text-gray-600 hover:text-gray-900"
-                      }`}
+                      className={`flex items-center gap-2 px-6 py-3 font-medium whitespace-nowrap border-b-2 transition-colors ${activeTab === tab.id
+                        ? "border-primary text-primary"
+                        : "border-transparent text-gray-600 hover:text-gray-900"
+                        }`}
                     >
                       <Icon size={20} />
                       {tab.label}
@@ -411,7 +416,6 @@ const ResourcesPage = () => {
                                 handleDownload(
                                   course.brochureUrl!,
                                   `${course.code}-brochure.pdf`,
-                                  "soshsa/courses",
                                 )
                               }
                               disabled={downloading === course.brochureUrl}
@@ -496,7 +500,6 @@ const ResourcesPage = () => {
                                     handleDownload(
                                       file.fileUrl,
                                       `${file.title}.${file.format.toLowerCase()}`,
-                                      "soshsa/citations",
                                     )
                                   }
                                   initial={{ opacity: 0, y: 20 }}
@@ -615,7 +618,6 @@ const ResourcesPage = () => {
                                   handleDownload(
                                     link.fileUrl!,
                                     `${link.title}.pdf`,
-                                    "soshsa/links",
                                   )
                                 }
                                 disabled={downloading === link.fileUrl}

@@ -12,6 +12,16 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "dgqkosobeyvqhgkpylki.supabase.co"
+      },
+
+      {
+        protocol: "https",
+        hostname: "file-service-1t33.onrender.com"
+      },
+
+      {
+        protocol: "https",
+        hostname: "eonnzdktmvtutiuodhsz.supabase.co"
       }
     ],
   },
