@@ -1,10 +1,5 @@
 import useSWR from "swr";
 import axios from "axios";
-import { motion } from "framer-motion";
-import { toast, Toaster } from "sonner";
-import { useState, useEffect } from "react";
-import Layout from "@/components/website/Layout";
-import { BASE_URL, JEETIX_BASE_URL } from "@/utils/url";
 import {
   Video,
   Search,
@@ -15,7 +10,12 @@ import {
   ExternalLink,
   ChevronRight,
 } from "lucide-react";
+import { motion } from "framer-motion";
+import { toast, Toaster } from "sonner";
 import useDebounce from "@/utils/debounce";
+import { useState, useEffect } from "react";
+import Layout from "@/components/website/Layout";
+import { BASE_URL, JEETIX_BASE_URL } from "@/utils/url";
 
 interface Course {
   id: string;
@@ -172,7 +172,7 @@ const ResourcesPage = () => {
         const existingIds = new Set(prev.map((item) => item.id));
 
         const filtered = newItems.filter(
-          (item: CitationFile) => !existingIds.has(item.id)
+          (item: CitationFile) => !existingIds.has(item.id),
         );
 
         return [...prev, ...filtered];
@@ -204,7 +204,7 @@ const ResourcesPage = () => {
         const existingIds = new Set(prev.map((item) => item.id));
 
         const filtered = newItems.filter(
-          (item: UsefulLink) => !existingIds.has(item.id)
+          (item: UsefulLink) => !existingIds.has(item.id),
         );
 
         return [...prev, ...filtered];
@@ -306,10 +306,11 @@ const ResourcesPage = () => {
                     <button
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
-                      className={`flex items-center gap-2 px-6 py-3 font-medium whitespace-nowrap border-b-2 transition-colors ${activeTab === tab.id
-                        ? "border-primary text-primary"
-                        : "border-transparent text-gray-600 hover:text-gray-900"
-                        }`}
+                      className={`flex items-center gap-2 px-6 py-3 font-medium whitespace-nowrap border-b-2 transition-colors ${
+                        activeTab === tab.id
+                          ? "border-primary text-primary"
+                          : "border-transparent text-gray-600 hover:text-gray-900"
+                      }`}
                     >
                       <Icon size={20} />
                       {tab.label}
