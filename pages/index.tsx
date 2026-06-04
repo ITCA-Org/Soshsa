@@ -4,6 +4,7 @@ import HeroSection from "@/components/website/home/HeroSection";
 import AboutSection from "@/components/website/home/AboutSection";
 import EventsSection from "@/components/website/home/EventsSection";
 import MagazineSection from "@/components/website/home/MagazineSection";
+import SponsorsSection from "@/components/website/home/SponsorsSection";
 
 const HomePage = () => (
   <Layout
@@ -13,6 +14,7 @@ const HomePage = () => (
     description="Official website of the Social Sciences and Humanities Students' Association at the University of The Gambia."
   >
     <HeroSection />
+    <SponsorsSection />
     <AboutSection />
     <MagazineSection />
     <EventsSection />
