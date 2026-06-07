@@ -144,7 +144,7 @@ const Footer = () => {
               © {currentYear} SoSHSA. All rights reserved.
             </p>
             <p className="text-sm text-gray-400">
-              Designed with passion for students
+              Designed and Built by <a href="https://www.itcahub.com" target="_blank" rel="noopener">ITCA</a>
             </p>
           </div>
         </div>
