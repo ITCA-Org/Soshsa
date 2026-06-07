@@ -143,7 +143,7 @@ const Footer = () => {
             <p className="text-sm text-gray-400">
               © {currentYear} SoSHSA. All rights reserved.
             </p>
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-white">
               Designed and Built by <a href="https://www.itcahub.com" target="_blank" rel="noopener">ITCA</a>
             </p>
           </div>
